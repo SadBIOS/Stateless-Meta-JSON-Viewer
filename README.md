@@ -46,7 +46,6 @@ root/
         └── IBMPlexSansArabic-Bold.ttf
 
 ```
->> If you want to view the media files within your viewing .HTML chat file in the browser, it is important for the .json files to be present within the same folder where the media folder is present after extraction. Otherwise the media won't be displayed after conversion in the .HTML file
 
 > [!WARNING]
 > I am not a designer so forgive the garish blue color palette. I'll hopefully get back it **Soon™**
