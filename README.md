@@ -20,7 +20,7 @@ Before using the viewer, you will need to download your chat data from Meta:
 
 ## Project File Structure
 
-Download the [package](https://github.com/SadBIOS/Stateless-Meta-JSON-Viewer/releases/download/v0.4-pre/json_conv_v-004.zip) from [Releases](https://github.com/SadBIOS/Stateless-Meta-JSON-Viewer/releases/tag/v0.4-pre) section and `unzip` the archive. It should result in the following file structure.
+Download the [Package](https://github.com/SadBIOS/Stateless-Meta-JSON-Viewer/releases/download/v0.5/v0.5-stable.zip) from [Releases](https://github.com/SadBIOS/Stateless-Meta-JSON-Viewer/releases) section and `unzip` the archive. It should result in the following file structure.
 
 ```text
 root/
