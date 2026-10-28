@@ -47,5 +47,5 @@ root/
 
 ```
 
-> [!WARNING]
-> I am not a designer so forgive the garish blue color palette. I'll hopefully get back it **Soon™**
+> [!INFO]
+> I have merged fork of this project from [Siam's](https://github.com/sifatsiam/Stateless-Meta-JSON-Viewer) repository and fixed some minor issues.
