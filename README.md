@@ -3,6 +3,10 @@
 This project is proudly inspired by **Sam's** repository:
 - [main.py](https://github.com/Samkaka22/Old-Messenger-Chats-Format-Converter/blob/main/main.py) from [Old-Messenger-Chats-Format-Converter](https://github.com/Samkaka22/Old-Messenger-Chats-Format-Converter/)
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/SadBIOS/Stateless-Meta-JSON-Viewer/refs/heads/main/proj_view.png" alt="How I Look Mate?" width="90%">
+</p>
+
 While Sam's project converts newer Meta JSON chat exports back into the classic HTML format, **Stateless-Meta-JSON-Viewer** provides a modern, interactive, client-side single-page viewer with instant searching, media support and dynamic customization. All this without the need for any cloud based resources to this can be used completely offline.
 
 
