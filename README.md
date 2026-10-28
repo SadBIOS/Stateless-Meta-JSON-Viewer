@@ -1,6 +1,4 @@
 # Stateless Meta JSON Viewer
-## Original and SadBIOS's Repository given below. ↓
-*And additional information is added by Me at the very end.*
 
 This project is proudly inspired by **Sam's** repository:
 - [main.py](https://github.com/Samkaka22/Old-Messenger-Chats-Format-Converter/blob/main/main.py) from [Old-Messenger-Chats-Format-Converter](https://github.com/Samkaka22/Old-Messenger-Chats-Format-Converter/)
@@ -51,14 +49,3 @@ root/
 
 > [!WARNING]
 > I am not a designer so forgive the garish blue color palette. I'll hopefully get back it **Soon™**
-
-# I Clean and Redesign almost everything...
-## How to use it
- 1. Download full Project.
- 2. Unzip it (pure optional this project fully offline local browser based so it can even run from a zip file)
- 3. Double click *index.html* it will open UI
- 4. Upload Meta's json file.
-      for example : Select a _Meta JSON file to load_ and *Browse* for upload (conversation-pull.json)
- 5. For image and other media, Load MEDIA folder
-
-# This whole project is self-explanatory. so that means it's easy to understand on its own without needing extra details. Enjoy
