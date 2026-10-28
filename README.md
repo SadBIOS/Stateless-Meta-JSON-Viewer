@@ -52,4 +52,4 @@ root/
 ```
 
 > [!NOTE]
-> I have merged fork of this project from [Siam's](https://github.com/sifatsiam/Stateless-Meta-JSON-Viewer) repository and fixed some minor issues.
+> I have merged fork of this project from [Siam's](https://github.com/sifatsiam/Stateless-Meta-JSON-Viewer) repository and fixed some minor UI bugs.
