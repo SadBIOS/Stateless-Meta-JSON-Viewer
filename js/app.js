@@ -3,7 +3,7 @@ const translations = {
         title: "Meta JSON Viewer",
         selectFile: "Select a Meta JSON file to load",
         allowMedia: "Load MEDIA folder",
-        mediaTips: "To view images or videos, click the button and select the folder containing them.",
+        mediaTips: "To view images or videos, click the button and select the folder(media) containing them.",
         perspective: "View from the perspective of:",
         customization: "Customization",
         showMyName: "Show my name",
@@ -11,8 +11,6 @@ const translations = {
         showTime: "Show timestamps",
         showReacts: "Show reactions",
         export: "Export",
-        exportPdf: "Export to PDF (Local Print)",
-        exportHint: "Uses local browser print for reliable offline PDF saving.",
         searchMsg: "Search messages",
         searchPlaceholder: "(supports fuzzy, no-diacritics)",
         searchBtn: "Search",
@@ -38,8 +36,6 @@ const translations = {
         showTime: "إظهار الطابع الزمني",
         showReacts: "إظهار التفاعلات",
         export: "تصدير",
-        exportPdf: "تصدير إلى PDF (طباعة محلية)",
-        exportHint: "يستخدم متصفح الطباعة المحلي لحفظ ملفات PDF دون اتصال بالإنترنت.",
         searchMsg: "بحث في الرسائل",
         searchPlaceholder: "(يدعم البحث التقريبي بدون تشكيل)",
         searchBtn: "بحث",
@@ -65,8 +61,6 @@ const translations = {
         showTime: "タイムスタンプを表示",
         showReacts: "リアクションを表示",
         export: "エクスポート",
-        exportPdf: "PDFにエクスポート (ローカル印刷)",
-        exportHint: "ブラウザのローカル印刷機能を使用してPDFとして保存します。",
         searchMsg: "メッセージを検索",
         searchPlaceholder: "(あいまい検索、ダイアクリティカルマークなし対応)",
         searchBtn: "検索",
@@ -467,25 +461,38 @@ function highlightText(original, query) {
     return out;
 }
 
+
+function linkifyEscapedText(escapedText) {
+    // URLs are linked only after HTML escaping; only http(s) and www links are accepted.
+    return escapedText.replace(/(https?:\/\/[^\s<]+|www\.[^\s<]+)/gi, (candidate) => {
+        const clean = candidate.replace(/[.,!?;:)\]]+$/g, '');
+        const trailing = candidate.slice(clean.length);
+        const href = /^https?:\/\//i.test(clean) ? clean : `https://${clean}`;
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer">${clean}</a>${trailing}`;
+    });
+}
+
 function createMessageHTML(msg, highlightQuery) {
     const sender = msg.senderName || msg.sender_name || "Unknown";
     const rawText = msg.text || msg.content || "";
-    const text = highlightQuery ? highlightText(String(rawText), highlightQuery) : escapeHtml(String(rawText));
+    const text = highlightQuery ? highlightText(String(rawText), highlightQuery) : linkifyEscapedText(escapeHtml(String(rawText)));
     const timestamp = msg.timestamp || msg.timestamp_ms || 0;
-    const mediaItems = [].concat(
-        msg.media || [],
-        msg.photos || [],
-        msg.videos || [],
-        msg.audio || [],
-        msg.audio_files || [],
-        msg.gifs || []
-    );
+    // Normalize optional Meta attachment arrays and ignore empty/invalid entries.
+    const mediaItems = [
+        ...(Array.isArray(msg.media) ? msg.media : []),
+        ...(Array.isArray(msg.photos) ? msg.photos : []),
+        ...(Array.isArray(msg.videos) ? msg.videos : []),
+        ...(Array.isArray(msg.audio) ? msg.audio : []),
+        ...(Array.isArray(msg.audio_files) ? msg.audio_files : []),
+        ...(Array.isArray(msg.gifs) ? msg.gifs : [])
+    ].filter(media => media && typeof media.uri === "string" && media.uri.trim());
+    const reactions = Array.isArray(msg.reactions) ? msg.reactions.filter(r => r && (r.reaction || r.actor)) : [];
 
     return `
         <div class="sender-name">${escapeHtml(sender)}</div>
         <div class="message-content">
             ${text}
-            ${mediaItems.map(media => {
+            ${mediaItems.length ? mediaItems.map(media => {
                 const fileName = media.uri.split(/[\\\/]/).pop().toLowerCase();
                 const matchingFile = Object.keys(mediaFiles).find(f => f.toLowerCase().endsWith(fileName));
                 const fileURL = matchingFile ? mediaFiles[matchingFile] : null;
@@ -506,8 +513,8 @@ function createMessageHTML(msg, highlightQuery) {
                         : `[ Audio not found ]`;
                 }
                 return `[ Media not found ]`;
-            }).join("")}
-            ${msg.reactions?.length ? `<div class="reaction">${msg.reactions.map(r => `${escapeHtml(r.actor)}: ${escapeHtml(r.reaction)}`).join(", ")}</div>` : ""}
+            }).join("") : ""}
+            ${reactions.length ? `<div class="reaction">${reactions.map(r => `${escapeHtml(r.actor || "")}: ${escapeHtml(r.reaction || "")}`).join(", ")}</div>` : ""}
             <div class="timestamp">${new Date(timestamp).toLocaleString()}</div>
         </div>
     `;
@@ -746,7 +753,18 @@ function renderChunk(chunkIndex, messages, selectedValue) {
         const globalIdx = chunkIndex * CHUNK_SIZE + localIdx;
         const div = document.createElement("div");
         const sender = msg.senderName || msg.sender_name || "Unknown";
+        const previous = globalIdx > 0 ? window.currentChatData.messages[globalIdx - 1] : null;
+        const next = globalIdx + 1 < window.currentChatData.messages.length ? window.currentChatData.messages[globalIdx + 1] : null;
+        const previousSender = previous ? (previous.senderName || previous.sender_name || "Unknown") : null;
+        const nextSender = next ? (next.senderName || next.sender_name || "Unknown") : null;
+        const samePrevious = previousSender === sender;
+        const sameNext = nextSender === sender;
         div.classList.add("message", sender === selectedValue ? "from-me" : "from-them");
+        div.classList.add(samePrevious ? "grouped-with-previous" : "group-start");
+        if (sameNext) div.classList.add("grouped-with-next");
+        if (samePrevious && sameNext) div.classList.add("group-middle");
+        else if (samePrevious) div.classList.add("group-end");
+        else if (sameNext) div.classList.add("group-start");
         div.dataset.msgIndex = globalIdx;
         try { div.__rawMessage = msg; } catch(e) {}
         div.innerHTML = createMessageHTML(msg, highlightQuery);
@@ -769,12 +787,41 @@ globalSettingsBtn?.addEventListener('click', (e) => {
     globalSettingsBtn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
 });
 
-const exportPdfBtn = document.getElementById('exportPdfBtn');
-exportPdfBtn?.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (!window.currentChatData || !window.currentChatData.messages) {
-        alert("Please load a Meta JSON conversation first.");
-        return;
+
+/* Appearance controls are intentionally additive: existing rendering/storage stays intact. */
+(function initAppearanceControls() {
+    const root = document.documentElement;
+    const themeSelect = document.getElementById('themeSelect');
+    const accentSelect = document.getElementById('accentSelect');
+    const themes = ['midnight', 'paper', 'moss', 'plum'];
+    const accents = ['mint', 'coral', 'blue', 'lilac'];
+    function applyTheme(value) {
+        const theme = themes.includes(value) ? value : 'midnight';
+        root.dataset.theme = theme;
+        if (themeSelect) themeSelect.value = theme;
+        try { localStorage.setItem('mjv_theme', theme); } catch (_) {}
     }
-    window.print();
-});
+    function applyAccent(value) {
+        const accent = accents.includes(value) ? value : 'mint';
+        root.dataset.accent = accent;
+        if (accentSelect) accentSelect.value = accent;
+        try { localStorage.setItem('mjv_accent', accent); } catch (_) {}
+    }
+    try { applyTheme(localStorage.getItem('mjv_theme') || 'midnight'); } catch (_) { applyTheme('midnight'); }
+    try { applyAccent(localStorage.getItem('mjv_accent') || 'mint'); } catch (_) { applyAccent('mint'); }
+    themeSelect?.addEventListener('change', e => applyTheme(e.target.value));
+    accentSelect?.addEventListener('change', e => applyAccent(e.target.value));
+
+    const densitySelect = document.getElementById('densitySelect');
+    function applyDensity(value) {
+        const density = value === 'comfortable' ? 'comfortable' : 'compact';
+        root.dataset.density = density;
+        if (densitySelect) densitySelect.value = density;
+        try { localStorage.setItem('mjv_density', density); } catch (_) {}
+    }
+    let savedDensity = 'compact';
+    try { savedDensity = localStorage.getItem('mjv_density') || 'compact'; } catch (_) {}
+    applyDensity(savedDensity);
+    densitySelect?.addEventListener('change', e => applyDensity(e.target.value));
+
+})();

@@ -32,6 +32,31 @@
                     </svg>
                 </button>
             </div>
+            <div class="design-toolbar" aria-label="Appearance controls">
+                <div class="toolbar-label"><span class="status-dot"></span><span>LOCAL WORKSPACE</span></div>
+                <label class="compact-control">Theme
+                    <select id="themeSelect" aria-label="Choose theme">
+                        <option value="midnight">Midnight ink</option>
+                        <option value="paper">Warm paper</option>
+                        <option value="moss">Field notes</option>
+                        <option value="plum">Electric plum</option>
+                    </select>
+                </label>
+                <label class="compact-control">Accent
+                    <select id="accentSelect" aria-label="Choose accent color">
+                        <option value="mint">Sea glass</option>
+                        <option value="coral">Persimmon</option>
+                        <option value="blue">Cobalt</option>
+                        <option value="lilac">Lilac</option>
+                    </select>
+                </label>
+                <label class="compact-control">Chat spacing
+                    <select id="densitySelect" aria-label="Choose chat spacing">
+                        <option value="compact">Compact</option>
+                        <option value="comfortable">Comfortable</option>
+                    </select>
+                </label>
+            </div>
             <hr>
             <div class="settings">
                 <small data-i18n="selectFile">Select a Meta JSON file to load</small>
@@ -40,6 +65,7 @@
                 <small data-i18n="allowMedia">Load MEDIA folder</small>
                 <input type="file" id="mediaFolder" webkitdirectory directory>
                 <small id="tips" data-i18n="mediaTips">To view images or videos, click the button and select the folder containing them.</small>
+
                 <div class="options">
                     <hr>
                     <span><strong data-i18n="perspective">View from the perspective of:</strong></span>
@@ -66,12 +92,6 @@
                         </label>
                     </form>
 
-                    <hr>
-                    <span><strong data-i18n="export">Export</strong></span>
-                    <div class="export-section">
-                        <button id="exportPdfBtn" class="btn btn-primary" type="button" data-i18n="exportPdf">Export to PDF (Local Print)</button>
-                        <small class="export-hint" data-i18n="exportHint">Uses local browser print for reliable offline PDF saving.</small>
-                    </div>
                 </div>
 
                 <hr>
