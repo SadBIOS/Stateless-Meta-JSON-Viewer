@@ -1,7 +1,7 @@
 # Stateless Meta JSON Viewer
 
-This project is proudly inspired by **Sam's** repository:
-- [main.py](https://github.com/Samkaka22/Old-Messenger-Chats-Format-Converter/blob/main/main.py) from [Old-Messenger-Chats-Format-Converter](https://github.com/Samkaka22/Old-Messenger-Chats-Format-Converter/)
+This project is proudly inspired by **上田's** repository:
+- [main.py](https://github.com/Samkaka22/Old-Messenger-Chats-Format-Converter/blob/main/main.py) from [Old-Messenger-Chats-Format-Converter](https://github.com/Sudo-Zenwoo/Old-Messenger-Chats-Format-Converter)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/SadBIOS/Stateless-Meta-JSON-Viewer/refs/heads/main/proj_view.png" alt="How I Look Mate?" width="90%">
