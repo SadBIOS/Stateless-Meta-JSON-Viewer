@@ -7,7 +7,7 @@ This project is proudly inspired by **上田's** repository:
   <img src="https://raw.githubusercontent.com/SadBIOS/Stateless-Meta-JSON-Viewer/refs/heads/main/proj_view.png" alt="How I Look Mate?" width="90%">
 </p>
 
-While Sam's project converts newer Meta JSON chat exports back into the classic HTML format, **Stateless-Meta-JSON-Viewer** provides a modern, interactive, client-side single-page viewer with instant searching, media support and dynamic customization. All this without the need for any cloud based resources to this can be used completely offline.
+While 上田's project converts newer Meta JSON chat exports back into the classic HTML format, **Stateless-Meta-JSON-Viewer** provides a modern, interactive, client-side single-page viewer with instant searching, media support and dynamic customization. All this without the need for any cloud based resources to this can be used completely offline.
 
 
 ## How to Export Your Data from Facebook & Messenger
